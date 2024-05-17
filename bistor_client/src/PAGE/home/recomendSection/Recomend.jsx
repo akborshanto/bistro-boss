@@ -1,10 +1,11 @@
 import React from 'react'
 
-const App = () => {
+const Recomend = () => {
   return (
     <div>
+      RECOMED
     </div>
   )
 }
 
-export default App
+export default Recomend
