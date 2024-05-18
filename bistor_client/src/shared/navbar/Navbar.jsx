@@ -13,7 +13,7 @@ const Navbar = () => {
   </Fragment>
   return (
     <div>
-    
+
     <div className="navbar bg-base-100 my-8">
     <div className="navbar-start">
       <div className="dropdown">

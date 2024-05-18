@@ -6,13 +6,16 @@ const MenuSection = () => {
 
 
 
-<div className='grid grid-cols-1 lg:grid-cols-2 my-8'>
+<div className='grid grid-cols-1 lg:grid-cols-2 my-8 p-4'>
 
-<div className='grid grid-cols-1 lg:grid-cols-2  justify-items-center'>
+<div className='grid grid-cols-1 lg:grid-cols-2  justify-items-center items-center'>
 
-<div className="img">
-<img src="" alt="IMG" />
-</div>
+<div className="avatar">
+  <div className="w-24 mask mask-triangle">
+    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+  </div>
+
+  </div>
 <div className="title">
 <h1> ROAST DUCT</h1>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
@@ -20,11 +23,14 @@ const MenuSection = () => {
 
 </div>
 
-<div className='grid grid-cols-1 lg:grid-cols-2  justify-items-center'>
+<div className='grid grid-cols-1 lg:grid-cols-2  justify-items-center items-center'>
 
-<div className="img">
-<img src="" alt="IMG" />
-</div>
+<div className="avatar">
+  <div className="w-24 mask mask-triangle">
+    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+  </div>
+
+  </div>
 <div className="title">
 <h1> ROAST DUCT</h1>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
