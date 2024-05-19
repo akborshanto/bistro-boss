@@ -38,6 +38,7 @@ const OurMenu = () => {
 {/* Today coffe */}
       <UseTitle heading="TODAY'S OFFER" statement="---Don't miss---"></UseTitle>
       {/* TODAY MENU */}
+
       <TodayOffer pizza={offereds} ></TodayOffer>
       {/* deseret */}
       <TodayOffer pizza={desserts} img={dessertbg} title={"DESERT"}></TodayOffer>

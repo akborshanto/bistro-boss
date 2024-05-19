@@ -9,6 +9,8 @@ import Contact from "../PAGE/contact/Contact";
 import Dashboard from "../PAGE/Dashboard/Dashboard";
 import OurMenu from "../PAGE/OurMenu/OurMenu";
 import OurShop from "../PAGE/Ourshop/OurShop";
+import Login from "../PAGE/login/Login";
+import Register from "../PAGE/register/Register";
 
 
 export const router =createBrowserRouter
@@ -37,8 +39,16 @@ children:[
   element:<OurMenu></OurMenu>
 },
 {
-  path:'/ourShop',
+  path:'/ourShop/:title',
   element:<OurShop></OurShop>
+},
+{
+  path:'/login',
+  element:<Login></Login>
+},
+{
+  path:'/register',
+  element:<Register></Register>
 }
 
 

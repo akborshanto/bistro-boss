@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const OurMenuShared = ({ img, title, statement, price }) => {
   return (
@@ -21,7 +22,9 @@ const OurMenuShared = ({ img, title, statement, price }) => {
          </div>
         </div>
 
- 
+        <div className="text-center my-8">
+       
+        </div>
       </div>
     </div>
   );

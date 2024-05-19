@@ -1,5 +1,6 @@
 import React from 'react'
 import  cover from '../assets/menu/banner3.jpg'
+import { Link } from 'react-router-dom';
 const Cover = ({img,title,statement}) => {
   return (
     <div>
@@ -13,6 +14,7 @@ const Cover = ({img,title,statement}) => {
       </div>
     </div>
   </div>
+
     </div>
   )
 }

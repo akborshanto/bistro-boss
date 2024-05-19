@@ -1,20 +1,26 @@
 import React, { Fragment } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import UseAuth from '../../HOOK/Auth/UseAuth'
 
 const Navbar = () => {
-  const links=<Fragment>
   
+  /* get the user from firebase */
+  const {user,signOuts}=UseAuth()
+  console.log(user)
+  const links=<Fragment>
+
   <li><NavLink to='/'>HOME</NavLink></li>
   <li><NavLink to='/contact'>CONTACT</NavLink></li>
   <li><NavLink to='/dashboard'>DASAHBOARD</NavLink></li>
   <li><NavLink to='/ourmenu'>OUR MENU</NavLink></li>
-  <li><NavLink to='/ourshop'>OUR SHOP</NavLink></li>
+  <li><NavLink to='/ourshop/SALAD'>OUR SHOP</NavLink></li>
+
 
   </Fragment>
   return (
     <div>
 
-    <div className="navbar bg-base-100 my-8">
+    <div className="navbar  my-8">
     <div className="navbar-start">
       <div className="dropdown">
         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -35,7 +41,14 @@ const Navbar = () => {
   </ul>
     </div>
     <div className="navbar-end">
-      <a className="btn">Button</a>
+   
+  {
+    user &&   
+
+    <li><NavLink to='/login' onClick={signOuts()}>LogOut</NavLink></li>
+  
+  }
+  <li><NavLink to='/login'>LOGIN</NavLink></li>
     </div>
   </div>
     </div>

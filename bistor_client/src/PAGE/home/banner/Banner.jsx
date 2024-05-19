@@ -18,6 +18,8 @@ import logo2 from "../../../assets/home/02.jpg";
 import logo3 from "../../../assets/home/03.png";
 import logo4 from "../../../assets/home/04.jpg";
 import logo5 from "../../../assets/home/05.png";
+import Navbar from './../../../shared/navbar/Navbar';
+import Cover from "../../../sharedComponent/Cover";
 
 const Banner = () => {
   return (
@@ -29,9 +31,12 @@ const Banner = () => {
         modules={[Pagination]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <div>
-            <img src={logo1} alt="" />
+
+        <SwiperSlide style={{backgroundImage: `url("${logo2}") `, color:"white", height:"auto",background:"cover"}}>
+          <div >
+     
+    {/*         <img src={logo1} alt="" /> */}
+            <Navbar></Navbar>
           </div>
         </SwiperSlide>
         <SwiperSlide>
