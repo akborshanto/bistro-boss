@@ -8,8 +8,8 @@ const Login = () => {
    // const ref=useRef(null)//e.target.value same
 const navigate=useNavigate()
 const location=useLocation()
-  const from=location.state?.from?.pathname || "/";
-  console.log(from)
+  const from=location.state?.from?.pathname || "/login";
+
     const handleSubmit=(e)=>{
         e.preventDefault()
         const form=e.target;
@@ -19,7 +19,7 @@ const location=useLocation()
         signIn(email,password)
         .then(res=> {
           navigate(from,{replace:true})
-          console.log(res.user)
+  
         })
 
     }
@@ -53,8 +53,8 @@ const handleGoogle=()=>{
 
   gogoleLogin()
   .then(res=>{
-    navigate(from,{replace:true})
-    console.log(res)
+    navigate("/login",{state:{from:location}})
+
   })
 }
   return (

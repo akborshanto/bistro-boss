@@ -35,16 +35,41 @@ async function run() {
 
 /* bistro_boss collection */
 const recipeCollection=client.db('bistro_boss').collection('recipe')
+const cartCollection=client.db('bistro_boss').collection('ourShopCart')
 
 
 
-
-/* get the data from  wrincle collection */
+/* get the  cart collection data from  wrincle collection */
 app.get('/reciepe',async (req,res)=>{
 
 const consequence=await recipeCollection.find().toArray()
     res.send(consequence)
 
+
+
+})
+
+/* GET THE DATA FROM In As Much as ourShopCart */
+app.get('/carts',async (req,res)=>{
+  const email=req.query.email;
+const query={email:email}
+console.log(query)
+const result=await cartCollection.find(query).toArray()
+res.send(result)
+
+
+
+})
+
+
+
+/* our shop cart post method */
+app.post('/ourShopCart',async (req,res)=>{
+
+const query=req.body;
+console.log(query)
+const result=await cartCollection.insertOne(query)
+res.send(result)
 
 
 })
@@ -76,3 +101,5 @@ app.get("/",async (req,res)=>{
 app.listen(port,()=>{
     console.log("example litenting port ")
 })
+
+

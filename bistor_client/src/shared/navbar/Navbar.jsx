@@ -1,9 +1,13 @@
 import React, { Fragment } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import UseAuth from '../../HOOK/Auth/UseAuth'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { FaCartShopping } from "react-icons/fa6";
+import UseCart from '../../HOOK/TENSTACKQUERY/UseCart';
+
 const Navbar = () => {
-  
+  const [cart]=UseCart()
+  //console.log(cart)
   /* get the user from firebase */
   const {user,signOuts}=UseAuth()
   console.log(user)
@@ -35,6 +39,14 @@ const Navbar = () => {
   <li><NavLink to='/dashboard'>DASAHBOARD</NavLink></li>
   <li><NavLink to='/ourmenu'>OUR MENU</NavLink></li>
   <li><NavLink to='/ourshop/SALAD'>OUR SHOP</NavLink></li>
+
+
+
+
+ 
+  <FaCartShopping className='text-3xl' />
+
+  <div className="badge badge-secondary">{cart.length}</div>
 
 
   </Fragment>

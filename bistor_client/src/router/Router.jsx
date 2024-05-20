@@ -12,7 +12,7 @@ import OurShop from "../PAGE/Ourshop/OurShop";
 import Login from "../PAGE/login/Login";
 import Register from "../PAGE/register/Register";
 import PrivateRoute from "../private/PrivateRoute";
-
+/* tns */
 
 export const router =createBrowserRouter
 ([
