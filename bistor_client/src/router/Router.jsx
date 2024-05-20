@@ -11,6 +11,7 @@ import OurMenu from "../PAGE/OurMenu/OurMenu";
 import OurShop from "../PAGE/Ourshop/OurShop";
 import Login from "../PAGE/login/Login";
 import Register from "../PAGE/register/Register";
+import PrivateRoute from "../private/PrivateRoute";
 
 
 export const router =createBrowserRouter
@@ -29,7 +30,7 @@ children:[
 },
 {
   path:'/contact',
-  element:<Contact></Contact>
+  element:<PrivateRoute><Contact></Contact></PrivateRoute>
 },{
   path:'/dashboard',
   element:<Dashboard></Dashboard>

@@ -1,16 +1,52 @@
 import React from "react";
 import UseAuth from "../../HOOK/Auth/UseAuth";
 import { useForm } from "react-hook-form";
+import { Helmet } from 'react-helmet-async';
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Register = () => {
+  const { user, createUser,updateProfileUser} = UseAuth();
+const navigate=useNavigate()
   /* react hhook form */
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = data =>{
 
 
-  } ;
+createUser(data.email,data.password,data.name,data.photoURL)
+.then(result=>{
+  console.log(result.user)
 
-  const { user, createUser } = UseAuth();
+  updateProfileUser(data.name,data.photoURL)
+  .then(result=>{
+    Swal.fire({
+      title: "SUCCEFULLY UPDATED ?",
+      width: 600,
+      padding: "3em",
+      color:blue,
+      background: "#fb5200 url(/images/trees.png)",
+      backdrop: `
+        rgba(30,0,123,0.4)
+        url("/images/nyan-cat.gif")
+        left top
+        no-repeat
+      `
+    });
+navigate("/")
+    console.log(result)
+  })
+/*  */
+
+navigate("/")
+})
+
+
+
+ } 
+
+
+
+
 
 console.log(user)
 
@@ -36,7 +72,9 @@ console.log(user)
   return (
 
     <div>
-
+<Helmet>
+<title>Register</title>
+</Helmet>
 
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
@@ -67,6 +105,19 @@ console.log(user)
               </div>
               <div className="form-control">
                 <label className="label">
+                  <span className="label-text">PHOTO</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="name"
+                  className="input input-bordered"
+          
+                  name="photo"
+                  {...register("photoURL",{required:true})} 
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
                   <span className="label-text">Email</span>
                 </label>
                 <input
@@ -92,8 +143,11 @@ console.log(user)
                 />
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Sign Up</button>
+              <input type="submit" className="btn btn-info"></input>
               </div>
+       <Link to='/login'>
+       <h3>ALERAY AN ACCOUNT</h3>
+       </Link>
             </form>
           </div>
         </div>

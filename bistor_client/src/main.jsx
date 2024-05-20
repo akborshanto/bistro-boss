@@ -7,7 +7,7 @@ import { router } from './router/Router.jsx'
 import { HelmetProvider } from 'react-helmet-async';
 import AuthProvider from './FIREBASE/AuthProvider.jsx'
 
-
+import Swal from 'sweetalert2'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
 

@@ -1,12 +1,33 @@
 import React, { Fragment } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import UseAuth from '../../HOOK/Auth/UseAuth'
-
+import Swal from 'sweetalert2'
 const Navbar = () => {
   
   /* get the user from firebase */
   const {user,signOuts}=UseAuth()
   console.log(user)
+  const handleSignOut=()=>{
+    signOuts()
+    .then(res=>{
+      Swal.fire({
+        title: "ARE YOU SURE ?",
+        width: 600,
+        padding: "3em",
+        color: "#716add",
+        background: "red url(/images/trees.png)",
+        backdrop: `
+          rgba(30,0,123,0.4)
+          url("/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `
+      });
+
+
+
+    })
+  }
   const links=<Fragment>
 
   <li><NavLink to='/'>HOME</NavLink></li>
@@ -42,13 +63,16 @@ const Navbar = () => {
     </div>
     <div className="navbar-end">
    
-  {
-    user &&   
 
-    <li><NavLink to='/login' onClick={signOuts()}>LogOut</NavLink></li>
-  
+
+ {user ?    <li><NavLink onClick={handleSignOut} >LogOut</NavLink></li>
+   :
+ <li><NavLink to='/login'>LOGIN</NavLink></li> 
+ 
+ 
+
   }
-  <li><NavLink to='/login'>LOGIN</NavLink></li>
+  
     </div>
   </div>
     </div>

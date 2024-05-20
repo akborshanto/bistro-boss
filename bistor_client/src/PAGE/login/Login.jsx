@@ -1,19 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect,  useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import UseAuth from '../../HOOK/Auth/UseAuth';
 const Login = () => {
     const [disabled,setDisabled]=useState(true)
-    const {user,gogoleLogin}=UseAuth()
-    const ref=useRef(null)
-
-  
+    const {user,gogoleLogin,signIn}=UseAuth()
+   // const ref=useRef(null)//e.target.value same
+const navigate=useNavigate()
+const location=useLocation()
+  const from=location.state?.from?.pathname || "/";
+  console.log(from)
     const handleSubmit=(e)=>{
         e.preventDefault()
         const form=e.target;
         const email=form.email.value;
         const password=form.password.value;
         console.log(password,email)
+        signIn(email,password)
+        .then(res=> {
+          navigate(from,{replace:true})
+          console.log(res.user)
+        })
 
     }
 /* login with googl */
@@ -28,7 +35,7 @@ const Login = () => {
 
 /* handleUserCaptcha */
 const handleUserCaptcha=(e)=>{
-const user_Captcha=ref.current.value;
+const user_Captcha=e.target.value;
 console.log(user_Captcha)
 if(validateCaptcha(user_Captcha)){
 setDisabled(false)
@@ -46,11 +53,9 @@ const handleGoogle=()=>{
 
   gogoleLogin()
   .then(res=>{
-
-    console.log(result)
+    navigate(from,{replace:true})
+    console.log(res)
   })
-.catch(err=>console.log(err))
-
 }
   return (
     <div>
@@ -86,8 +91,8 @@ const handleGoogle=()=>{
               <span className="label-text">Captha</span>
             </label>
             <LoadCanvasTemplate />
-            <input  ref={ref} type="text" placeholder=" type the text captha above..." className="input input-bordered" required name=' captha'/>
-            <button onClick={handleUserCaptcha} className='btn btn-outline py-2'>VALIDATE</button>
+            <input onBlur={handleUserCaptcha}    type="text" placeholder=" type the text captha above..." className="input input-bordered" required name=' captha'/>
+
           </div>
 
 
