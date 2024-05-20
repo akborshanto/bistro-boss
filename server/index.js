@@ -16,7 +16,7 @@ app.use(exprees.json())
 ============================================ */
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://bistro_boss:Iwfq7LACuq6a0d7c@cluster1.phei2xm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -49,11 +49,13 @@ const consequence=await recipeCollection.find().toArray()
 
 })
 
-/* GET THE DATA FROM In As Much as ourShopCart */
+
+
+/* GET THE DATA FROM In As Much as cartCollection */
 app.get('/carts',async (req,res)=>{
   const email=req.query.email;
 const query={email:email}
-console.log(query)
+//console.log(query)
 const result=await cartCollection.find(query).toArray()
 res.send(result)
 
@@ -74,8 +76,17 @@ res.send(result)
 
 })
 
+/*  delte the data  specifiq,appointed,earMarked outof our*/
+app.delete('/carts/:id',async(req,res)=>{
+
+const id=req.params.id
+console.log(id)
+const query={_id: new ObjectId(id)}
+const consequence=await cartCollection.deleteOne(query)
+res.send(consequence)
 
 
+})
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");

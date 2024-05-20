@@ -36,18 +36,21 @@ const Navbar = () => {
 
   <li><NavLink to='/'>HOME</NavLink></li>
   <li><NavLink to='/contact'>CONTACT</NavLink></li>
-  <li><NavLink to='/dashboard'>DASAHBOARD</NavLink></li>
-  <li><NavLink to='/ourmenu'>OUR MENU</NavLink></li>
+{/*   <li><NavLink to='/dashboard'>DASAHBOARD</NavLink></li>
+ */}  <li><NavLink to='/ourmenu'>OUR MENU</NavLink></li>
   <li><NavLink to='/ourshop/SALAD'>OUR SHOP</NavLink></li>
 
 
 
+<NavLink  to='/dashboard/cart'>
 
- 
-  <FaCartShopping className='text-3xl' />
+<FaCartShopping className='text-3xl' />
 
   <div className="badge badge-secondary">{cart.length}</div>
 
+</NavLink>
+ 
+  
 
   </Fragment>
   return (
