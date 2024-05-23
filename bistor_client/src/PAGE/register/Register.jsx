@@ -4,8 +4,12 @@ import { useForm } from "react-hook-form";
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import UseAxiosPublic from "../../HOOK/AXIOS/AxiosPublic";
 
 const Register = () => {
+/* axios public */
+const axiosPublic=UseAxiosPublic()
+
   const { user, createUser,updateProfileUser} = UseAuth();
 const navigate=useNavigate()
   /* react hhook form */
@@ -19,11 +23,29 @@ createUser(data.email,data.password,data.name,data.photoURL)
 
   updateProfileUser(data.name,data.photoURL)
   .then(result=>{
+
+/* user info */
+const userInfo={
+  name:data.name,
+  email:data.email
+}
+
+/* axios post */
+axiosPublic.post('/users',userInfo)
+.then(res=>{
+if(res.data.insertedId >0){
+  console.log("data added")
+  
+}
+
+
+})
+
     Swal.fire({
       title: "SUCCEFULLY UPDATED ?",
       width: 600,
       padding: "3em",
-      color:blue,
+      color:"blue",
       background: "#fb5200 url(/images/trees.png)",
       backdrop: `
         rgba(30,0,123,0.4)
@@ -33,7 +55,7 @@ createUser(data.email,data.password,data.name,data.photoURL)
       `
     });
 navigate("/")
-    console.log(result)
+//console.log(result)
   })
 /*  */
 
