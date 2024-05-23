@@ -42,9 +42,9 @@ async function run() {
 
       const user = req.body;
 
-      console.log(user);
+      //console.log(user);
       const query = { email: user.email };
-      console.log(query);
+     // console.log(query);
       const existingUser = await userCollection.findOne(query);
       if (existingUser) {
         return res.send({ message: "user already exis", insertedId: null });
@@ -53,6 +53,52 @@ async function run() {
       const result = await userCollection.insertOne(user);
       res.send(result);
     });
+/* get the all user data */
+app.get('/users',async (req,res)=>{
+
+  const result=await userCollection.find().toArray()
+  res.send(result)
+
+})
+
+/* update the data from users collsction */
+app.patch('/user/admin/:id',async(req,res)=>{
+const id=req.params.id;
+const userData=req.body;
+console.log(userData)
+const query= {_id: new ObjectId(id)}
+const updateDoc={
+
+  $set:{
+
+//role/introduction/preface/foreword/induction 
+//coritro
+role:'admin'
+
+
+
+
+  }
+}
+const result=await userCollection.updateOne(query,updateDoc)
+console.log(result)
+res.send(result)
+
+})
+
+
+/* delete user */
+app.delete('/user/:id',async (req,res)=>{
+  
+const id=req.params.id;
+const query={_id: new ObjectId(id)}
+console.log(typeof id)
+const result= await userCollection.deleteOne(query)
+res.send(result)
+
+})
+
+
 
     /* get the  cart collection data from  wrincle collection */
     app.get("/reciepe", async (req, res) => {
