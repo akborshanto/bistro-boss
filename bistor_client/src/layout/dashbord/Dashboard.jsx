@@ -3,8 +3,52 @@ import { NavLink, Outlet } from "react-router-dom";
 import UseCart from "../../HOOK/TENSTACKQUERY/UseCart";
 
 const Dashboard = () => {
+
+
+
+
+
+/* is admin */
+const isAdmin=true;
+
+
+
+
+
+
+
 const [cart]=UseCart()
 const links=<Fragment>
+
+{
+
+isAdmin ?<Fragment>
+
+<li> 
+<NavLink to="/dashboard/addMinHome">Admin Home<h3 className="font-bold text-2xl text-blue-500"></h3></NavLink>
+</li>
+<li> 
+<NavLink to="/dashboard/addItems">Add Items<h3 className="font-bold text-2xl text-blue-500"></h3></NavLink>
+</li>
+<li> 
+<NavLink to="/dashboard/manageItems">Manage Items<h3 className="font-bold text-2xl text-blue-500"></h3></NavLink>
+</li>
+<li> 
+<NavLink to="/dashboard/manageBooking">Manage Booking<h3 className="font-bold text-2xl text-blue-500"></h3></NavLink>
+</li>
+<li> 
+<NavLink to="/dashboard/allUsers">All Users<h3 className="font-bold text-2xl text-blue-500"></h3></NavLink>
+</li>
+
+
+
+
+
+
+</Fragment>
+
+:<Fragment>
+
 <li>
 {/* abode,dwelling,cudgel,whang ,habitaion,quarter,gomicile,*/}
 <NavLink to="">User Home</NavLink>
@@ -38,12 +82,23 @@ const links=<Fragment>
 
 </Fragment>
 
+}
+
+
+
+
+
+</Fragment>
+
   return (
     <div      className="container mx-auto flex justify-between gap-8">
 
       <div className="flex ">
         <div className=" w-64 min-h-full bg-orange-300">
           <ul className="menu flex">
+
+
+
           {links}
           </ul>
         </div>

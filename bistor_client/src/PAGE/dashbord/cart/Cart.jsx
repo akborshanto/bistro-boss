@@ -21,32 +21,24 @@ const Cart = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    })
+    
+    .then((result) => {
       /* delete the data out of specifiq cart */
-      axiosSecure.delete(`/carts/${id}`).then((result) => {
+      axiosSecure
+        .delete(`/carts/${id}`)
 
+        .then((result) => {
+          if (result.data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
 
-
-            if (result.data.deletedCount > 0) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                  });
-
-                refetch();
-              }
-
-
-
-
-           
-          
-
-
-
-      
-      });
+            refetch();
+          }
+        });
     });
   };
 

@@ -11,6 +11,7 @@ import Register from "../PAGE/register/Register";
 import PrivateRoute from "../private/PrivateRoute";
 import Cart from "../PAGE/dashbord/cart/Cart";
 import Dashboard from "../layout/dashbord/Dashboard";
+import AllUser from "../layout/dashbord/allUser/AllUser";
 
 /* tns */
 
@@ -64,7 +65,19 @@ export const router = createBrowserRouter([
     children:[
 
   {    path:'cart',
-      element:<Cart></Cart>}
+      element:<Cart></Cart>},
+/* admin ruote */
+{path:"allUsers",
+
+element:<AllUser></AllUser>
+,
+
+
+}
+
+
+
+
     ]
 
 
