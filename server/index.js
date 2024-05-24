@@ -1,7 +1,7 @@
 const exprees = require("express");
 const cors = require("cors");
 /* json web token */
-const jwt=require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 const port = process.env.PORT || 5000;
@@ -9,11 +9,7 @@ const app = exprees();
 app.use(cors());
 app.use(exprees.json());
 
-
-
 /*  */
-
-
 
 //bistro_boss
 //Iwfq7LACuq6a0d7c
@@ -44,119 +40,165 @@ async function run() {
     const cartCollection = client.db("bistro_boss").collection("ourShopCart");
     const userCollection = client.db("bistro_boss").collection("users");
 
-
-
-/* jSON WEB TOKEN=======================
+    /* jSON WEB TOKEN=======================
 =========================== */
 
-/* middle ware token */
+    /* middle ware token */
+
+    app.post("/jwt", async (req, res) => {
+      // console.log(req.headers)
+      const user = req.body;
+      console.log(req.headers);
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN, {
+        expiresIn: "1h",
+      });
+      res.send({ token });
+    });
+
+    /* middle ware */
+    const verifyToken = (req, res, next) => {
+      console.log("insite verify token", req.headers);
+
+      if (!req.headers.authorization) {
+        return req.status(401).send({ message: "forbidden access" });
+      }
+      const token = req.headers.authorization.split(" ")[1];
+      /* 8 */
+      jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
+        if (err) {
+          return req.status(401).send({ message: "forbidden acces" });
+        }
+        req.decoded = decoded;
+        next();
+      });
+
+      // next()
+    };
+
+    /* use varify admin after verrify token */
+
+    const verifyAdmin= ("/users", verifyToken,async(req, res, next) => {
+      const email = req.decoded.email;
+      const query = { email: email };
+
+      const user = await userCollection.findOne(query);
+      const isAdmin = user?.role === "admin";
+      if (!isAdmin) {
+        return res.status(403).send({ message: "forbiddent token" });
+      }
+
+next()
 
 
+    });
 
-app.post('/jwt',async (req,res)=>{
- // console.log(req.headers)
-const user=req.body;
-const token=jwt.sign(user,process.env.ACCESS_TOKEN,{expiresIn:'1h'})
-res.send({token})
+    /* get token email value */
+    app.get("/users/admin/:email", verifyToken, async (req, res) => {
+      const emal = req.params.email;
+      if (emal !== req.decoded.email) {
+        return res.status(403).send({ Mesage: "useauthorezed a user access" });
+      }
+      const query = { emal: emal };
+      const user = await userCollection.findOne(query);
+      let admin = false;
+      if (user) {
+        admin = user?.role === "admin";
+      }
+      res.send({ admin });
+    });
 
-
-
-})
-
-
-
-
-/* jSON WEB TOKEN================
+    /* jSON WEB TOKEN================
 ================================== */
 
+    /* middleware */
+    // const virefyToken = (req, res, next) => {
+    //   console.log("inside verify token", req.headers);
 
-/* middleware */
-const virefyToken= (req,res,next)=>{
+    //   if (!req.headers.authorization) {
+    //     return res.status(401).send({ message: "FORBIDDEN ACCESS" });
+    //   }
 
-  console.log("inside verify token",req.headers)
-
-if(!req.headers.authorization){
-
-return res.status(401).send({message:"FORBIDDEN ACCESS"})
-
-}
-
-const token=req.headers.authorization.split(" ")[1]
- // next()
-}
-
-
+    //   const token = req.headers.authorization.split(" ")[1];
+    //   jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
+    //     if (err) {
+    //       return res.status(401).send({ message: "forbidden access" });
+    //     }
+    //     req.decoded = decoded;
+    //     next();
+    //   });
+    //   // next()
+    // };
 
     /* user realted api */
-    app.post("/users",virefyToken, async (req, res) => {
-      /* insert email if user doesnt exits */
-      //i can do this many ways (1,email unique 2.upsert 3,simple cheking)
-console.log(req.headers)
-      const user = req.body;
+    // app.post("/users", virefyToken, async (req, res) => {
+    //   /* insert email if user doesnt exits */
+    //   //i can do this many ways (1,email unique 2.upsert 3,simple cheking)
+    //   console.log(req.headers);
+    //   const user = req.body;
 
-      //console.log(user);
-      const query = { email: user.email };
-     // console.log(query);
-      const existingUser = await userCollection.findOne(query);
-      if (existingUser) {
-        return res.send({ message: "user already exis", insertedId: null });
-      }
-     // console.log(query);
-      const result = await userCollection.insertOne(user);
+    //   //console.log(user);
+    //   const query = { email: user.email };
+    //   // console.log(query);
+    //   const existingUser = await userCollection.findOne(query);
+    //   if (existingUser) {
+    //     return res.send({ message: "user already exis", insertedId: null });
+    //   }
+    //   // console.log(query);
+    //   const result = await userCollection.insertOne(user);
+    //   res.send(result);
+    // });
+    /* get the all user data */
+    app.get("/users", verifyToken,async (req, res) => {
+      console.log(req.headers);
+      const result = await userCollection.find().toArray();
       res.send(result);
     });
-/* get the all user data */
-app.get('/users',async (req,res)=>{
-console.log(req.header)
-  const result=await userCollection.find().toArray()
-  res.send(result)
 
-})
+    /* update the data from users collsction */
+    app.patch("/user/admin/:id", async (req, res) => {
+      const id = req.params.id;
+      const userData = req.body;
+      //console.log(userData)
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          //role/introduction/preface/foreword/induction
+          //coritro
+          role: "admin",
+        },
+      };
+      const result = await userCollection.updateOne(query, updateDoc);
+      //console.log(result)
+      res.send(result);
+    });
 
-/* update the data from users collsction */
-app.patch('/user/admin/:id',async(req,res)=>{
-const id=req.params.id;
-const userData=req.body;
-//console.log(userData)
-const query= {_id: new ObjectId(id)}
-const updateDoc={
-
-  $set:{
-
-//role/introduction/preface/foreword/induction 
-//coritro
-role:'admin'
-
-
-
-
-  }
-}
-const result=await userCollection.updateOne(query,updateDoc)
-//console.log(result)
-res.send(result)
-
-})
-
-
-/* delete user */
-app.delete('/user/:id',async (req,res)=>{
-  
-const id=req.params.id;
-const query={_id: new ObjectId(id)}
-//console.log(typeof id)
-const result= await userCollection.deleteOne(query)
-res.send(result)
-
-})
-
-
+    /* delete user */
+    app.delete("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      //console.log(typeof id)
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
+    });
 
     /* get the  cart collection data from  wrincle collection */
     app.get("/reciepe", async (req, res) => {
       const consequence = await recipeCollection.find().toArray();
       res.send(consequence);
     });
+
+/* post the menu data from add item client */
+app.post('/menu',verifyToken,async (req,res)=>{
+const query=req.body;
+console.log(query)
+const result=await recipeCollection.insertOne(query)
+res.send(result)
+
+
+})
+
+
+
 
     /* GET THE DATA FROM In As Much as cartCollection */
     app.get("/carts", async (req, res) => {
