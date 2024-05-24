@@ -11,11 +11,14 @@ import {
 } from "firebase/auth";
 import { app } from "./firebase.config";
 import { GoogleAuthProvider } from "firebase/auth";
+import UseAxiosPublic from "../HOOK/AXIOS/AxiosPublic";
 export const AuthContextProvider = createContext();
 
 
 const AuthProvider = ({ children }) => {
-  /*  */
+  /*  axios publick get the token value*/
+const axiosPublic=UseAxiosPublic()
+
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   /* cerate a user */
@@ -42,6 +45,32 @@ useEffect(()=>{
 
 const unSubsribe=onAuthStateChanged(auth,currntUser=>{
   setUser(currntUser)
+
+/* use token */
+if(currntUser){
+  //get the email value
+  const userInfo={email:currntUser.email}
+  console.log(userInfo)
+/* get the token ans store client site */
+axiosPublic.post('/jwt',userInfo)
+.then(res=>{
+console.log(res.data.token)
+
+if(res.data.token){
+
+  localStorage.setItem('access_token',res.data.token)
+}
+
+
+})
+
+
+}else{
+
+///remove the token from local storage
+localStorage.removeItem('access_token')
+}
+
   setLoading(false)
 })
 

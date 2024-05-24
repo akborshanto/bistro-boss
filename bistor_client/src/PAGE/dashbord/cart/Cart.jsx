@@ -66,7 +66,7 @@ const Cart = () => {
           <tbody>
             {/* row 1 */}
             {cart.map((singleCart) => {
-              console.log(singleCart);
+            //  console.log(singleCart);
               const { category, image, price, name, email, recipe, _id } =
                 singleCart || {};
               return (

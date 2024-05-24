@@ -36,7 +36,7 @@ const [,refetch]=UseCart()
 
         .then((res) => {
           if (res?.data.insertedId) {
-            console.log(res.data);
+            //console.log(res.data);
             Swal.fire({
               title: `Name:${name} SUCCESSFULL ADD THE DATA`,
               showClass: {

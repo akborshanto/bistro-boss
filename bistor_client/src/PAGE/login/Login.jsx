@@ -41,7 +41,7 @@ const Login = () => {
   /* handleUserCaptcha */
   const handleUserCaptcha = (e) => {
     const user_Captcha = e.target.value;
-    console.log(user_Captcha);
+   // console.log(user_Captcha);
     if (validateCaptcha(user_Captcha)) {
       setDisabled(false);
     } else {
@@ -64,7 +64,7 @@ const Login = () => {
       .then((res) => {
  
 
-        console.log(res);
+        //console.log(res);
       });
 
 

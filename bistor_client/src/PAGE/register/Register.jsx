@@ -34,7 +34,7 @@ const userInfo={
 axiosPublic.post('/users',userInfo)
 .then(res=>{
 if(res.data.insertedId >0){
-  console.log("data added")
+ // console.log("data added")
   
 }
 

@@ -11,7 +11,12 @@ const AllUser = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get("/users", {
+        //get the token value
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
       //console.log(res.data)
       return res.data;
     },
@@ -20,10 +25,10 @@ const AllUser = () => {
   /* handleMakeAdmin */
   const handleMakeAdmin = (user) => {
     /* axios secure */
-    console.log(user._id);
+    // console.log(user._id);
     axiosSecure.patch(`/user/admin/${user._id}`).then((res) => {
       if (res.data.modifiedCount > 0) {
-        refetch()
+        refetch();
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -31,8 +36,6 @@ const AllUser = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-
-
       }
     });
   };
@@ -49,20 +52,19 @@ const AllUser = () => {
     //   cancelButtonColor: "#d33",
     //   confirmButtonText: "Yes, delete it!",
     // })
-      /* delete the data out of specifiq cart */
+    /* delete the data out of specifiq cart */
 
-          /* delete the data out of specifiq cart */
+    /* delete the data out of specifiq cart */
 
-          axiosSecure.delete(`/user/${user._id}`)
-  
-            .then((result) => {
-              console.log(result.data)
-              if (result.data.deletedCount > 0) {
-          
-                refetch();
-              }
+    axiosSecure
+      .delete(`/user/${user._id}`)
 
-        });
+      .then((result) => {
+        // console.log(result.data)
+        if (result.data.deletedCount > 0) {
+          refetch();
+        }
+      });
     // .then((result) => {
     //   /* delete the data out of specifiq cart */
 
