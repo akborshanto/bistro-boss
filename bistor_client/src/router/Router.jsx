@@ -12,6 +12,8 @@ import PrivateRoute from "../private/PrivateRoute";
 import Cart from "../PAGE/dashbord/cart/Cart";
 import Dashboard from "../layout/dashbord/Dashboard";
 import AllUser from "../layout/dashbord/allUser/AllUser";
+import AddItems from "../PAGE/dashbord/addItems/AddItems";
+import AdminRoute from "../private/AdminRoute";
 
 /* tns */
 
@@ -36,7 +38,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-  /*     {
+      /*     {
         path: "/dashboard",
         element: <Dashboard></Dashboard>,
       }, */
@@ -60,48 +62,28 @@ export const router = createBrowserRouter([
   },
   /* dashboard cart */
   {
-    path: '/dashboard',
-    element:<PrivateRoute> <Dashboard></Dashboard></PrivateRoute>,
-    children:[
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        {" "}
+        <Dashboard></Dashboard>
+      </PrivateRoute>
+    ),
+    children: [
+      { path: "cart", element: <Cart></Cart> },
+      /* admin ruote */
+      {
+        path: "allUsers",
 
-  {    path:'cart',
-      element:<Cart></Cart>},
-/* admin ruote */
-{path:"allUsers",
+        element: <AdminRoute><AllUser></AllUser></AdminRoute>,
+      },
+    
 
-element:<AllUser></AllUser>
-,
-
-
+{
+  path:'addItems',
+  element:<AddItems></AddItems>
 }
 
-
-
-
-    ]
-
-
-
-
-
+    ],
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ]);

@@ -14,10 +14,9 @@ import { GoogleAuthProvider } from "firebase/auth";
 import UseAxiosPublic from "../HOOK/AXIOS/AxiosPublic";
 export const AuthContextProvider = createContext();
 
-
 const AuthProvider = ({ children }) => {
   /*  axios publick get the token value*/
-const axiosPublic=UseAxiosPublic()
+  const axiosPublic = UseAxiosPublic();
 
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
@@ -27,85 +26,64 @@ const axiosPublic=UseAxiosPublic()
   /*  gogle provider
    */
 
-
   /* create a user */
   const createUser = (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email,password);
+    return createUserWithEmailAndPassword(auth, email, password);
   };
-
-
-
-
-
 
   /* onAuthStateChange */
 
-useEffect(()=>{
+  useEffect(() => {
+    const unSubsribe = onAuthStateChanged(auth, (currntUser) => {
+      setUser(currntUser);
 
-const unSubsribe=onAuthStateChanged(auth,currntUser=>{
-  setUser(currntUser)
+      /* use token */
+      if (currntUser) {
+        //get the email value
+        const userInfo = { email: currntUser.email };
+        console.log(userInfo);
+        /* get the token ans store client site */
+        axiosPublic.post("/jwt", userInfo).then((res) => {
+          console.log(res.data.token);
 
-/* use token */
-if(currntUser){
-  //get the email value
-  const userInfo={email:currntUser.email}
-  console.log(userInfo)
-/* get the token ans store client site */
-axiosPublic.post('/jwt',userInfo)
-.then(res=>{
-console.log(res.data.token)
+          if (res.data.token) {
+            localStorage.setItem("access_token", res.data.token);
+          }
+        });
+      } else {
+        ///remove the token from local storage
+        localStorage.removeItem("access_token");
+      }
 
-if(res.data.token){
+      setLoading(false);
+    });
 
-  localStorage.setItem('access_token',res.data.token)
-}
+    return () => {
+      return unSubsribe();
+    };
+  }, [axiosPublic]);
 
-
-})
-
-
-}else{
-
-///remove the token from local storage
-localStorage.removeItem('access_token')
-}
-
-  setLoading(false)
-})
-
-return ()=>{
-  return unSubsribe()
-}
-},[])
-
-
-/* signIn with Email and passwofd */
-const signIn=(email,password)=>{
-  setLoading(true)
-  return signInWithEmailAndPassword(email,password)
-}
-  /* loging with google */
-  const gogoleLogin =async() => {
+  /* signIn with Email and passwofd */
+  const signIn = (email, password) => {
     setLoading(true);
-    return await  signInWithPopup(auth,provider);
+    return signInWithEmailAndPassword(email, password);
+  };
+  /* loging with google */
+  const gogoleLogin = async () => {
+    setLoading(true);
+    return await signInWithPopup(auth, provider);
   };
 
+  /* update user */
 
-
-
-/* update user */
-
-const updateProfileUser=(displayName,photoURL)=>{
-setLoading(true)
-  return updateProfile(auth.currentUser, {
-    displayName: displayName, photoURL:photoURL
-  })
-}
-
-
-
-
+  const updateProfileUser = (displayName, photoURL) => {
+    setLoading(true);
+    return updateProfile(auth.currentUser, {
+      displayName: displayName,
+      photoURL: photoURL,
+    });
+  };
 
   /* sign Out */
   const signOuts = () => {
@@ -122,8 +100,6 @@ setLoading(true)
     gogoleLogin,
     updateProfileUser,
     signOuts,
-
-    
   };
   return (
     <div>

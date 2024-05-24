@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import UseCart from "../../HOOK/TENSTACKQUERY/UseCart";
+import UseAdmin from "../../HOOK/TENSTACKQUERY/UseAdmin";
 
 const Dashboard = () => {
 
@@ -9,7 +10,7 @@ const Dashboard = () => {
 
 
 /* is admin */
-const isAdmin=true;
+const [isAdmin]=UseAdmin();
 
 
 
