@@ -57,7 +57,7 @@ async function run() {
 
     /* middle ware */
     const verifyToken = (req, res, next) => {
-      console.log("insite verify token", req.headers);
+//console.log("insite verify token", req.headers);
 
       if (!req.headers.authorization) {
         return req.status(401).send({ message: "forbidden access" });
@@ -187,12 +187,70 @@ next()
       res.send(consequence);
     });
 
+
+
+    /* update single data with specifiq id */
+app.get('/reciepe/:id', async (req,res)=>{
+
+const id=req.params.id;
+
+const query={_id: id}
+console.log(1,query)
+const result= await recipeCollection.findOne(query)
+console.log(result)
+res.send(result)
+
+})
+/* patch the recipe collection data */
+app.patch('/recipes/:id', async(req,res)=>{
+  const item=req.body;
+
+const id=req.params.id;
+console.log(id)
+const query={_id: id}
+const updateDoc={
+$set:{
+
+name:item.name,
+category:item.category,
+price:item.price,
+recipe:item.recipe,
+image:item.image
+
+}
+
+}
+console.log(item)
+const result=await recipeCollection.updateOne(query,updateDoc)
+console.log(result.data)
+res.send(result)
+
+
+})
+
+
+
+
+
 /* post the menu data from add item client */
-app.post('/menu',verifyToken,async (req,res)=>{
+app.post('/reciepe',verifyToken,async (req,res)=>{
 const query=req.body;
 console.log(query)
 const result=await recipeCollection.insertOne(query)
 res.send(result)
+
+
+})
+/* delete reciepte */
+
+app.delete('/reciepe/:id',verifyToken,verifyAdmin,async (req,res)=>{
+const id=req.params.id;
+console.log(id)
+const query={_id: new ObjectId(id)}
+console.log(query)
+const result= await recipeCollection.deleteOne(query)
+res.send(result)
+
 
 
 })
