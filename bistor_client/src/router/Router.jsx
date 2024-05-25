@@ -14,6 +14,8 @@ import Dashboard from "../layout/dashbord/Dashboard";
 import AllUser from "../layout/dashbord/allUser/AllUser";
 import AddItems from "../PAGE/dashbord/addItems/AddItems";
 import AdminRoute from "../private/AdminRoute";
+import ManageItems from "../PAGE/dashbord/mangeItems/ManageItems";
+import UpdateItem from "../PAGE/dashbord/mangeItems/update/UpdateItem";
 
 /* tns */
 
@@ -75,15 +77,29 @@ export const router = createBrowserRouter([
       {
         path: "allUsers",
 
-        element: <AdminRoute><AllUser></AllUser></AdminRoute>,
+        element: (
+          <AdminRoute>
+            <AllUser></AllUser>
+          </AdminRoute>
+        ),
       },
-    
 
-{
-  path:'addItems',
-  element:<AddItems></AddItems>
-}
+      {
+        path: "manageItems",
+        element: <ManageItems></ManageItems>,
+      },
+      {
+        path: 'updateItems/:id',
+        element: <UpdateItem></UpdateItem>,
 
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_URL}/reciepe/${params.id}`),
+      },
+
+      {
+        path: "addItems",
+        element: <AddItems></AddItems>,
+      },
     ],
   },
 ]);

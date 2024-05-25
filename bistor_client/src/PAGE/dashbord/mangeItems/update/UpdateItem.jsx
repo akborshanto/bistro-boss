@@ -1,19 +1,17 @@
 import React from "react";
-import UseTitle from "./../../../HOOK/TitelHook/UseTitle";
 import { useForm } from "react-hook-form";
-import UseAxiosPublic from "../../../HOOK/AXIOS/AxiosPublic";
-import UseAxiosSecure from "../../../HOOK/AXIOS/UseAxiosSecure";
-
-/* image hoisting */
+import { useLoaderData } from "react-router-dom";
+import UseAxiosSecure from "../../../../HOOK/AXIOS/UseAxiosSecure";
+import UseAxiosPublic from "../../../../HOOK/AXIOS/AxiosPublic";
 const IMG_HOISTIN = import.meta.env.VITE_IMAGE_BB;
 const image_hoisting_api = `https://api.imgbb.com/1/upload?key=${IMG_HOISTIN}`;
-//console.log(image_hoisting_api)
-const AddItems = () => {
-  /* axios public */
-  const axiosPublic = UseAxiosPublic();
-const axiosSecure=UseAxiosSecure()
+const UpdateItem = () => {
+  const axiosSecure = UseAxiosSecure();
+  const axiosPublic=UseAxiosPublic()
+  const { _id, name, image, recipe, category, price } = useLoaderData();
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data) => {
+
     //   console.log("data", data);
     //upload the image bb and get url
     const imageFile = { image: data.image[0] };
@@ -48,13 +46,13 @@ image:res.data.data.display_url
 
 /* user axios secure */
 
-const menuRes= await axiosSecure.post('/menu',menuItem)
+const menuRes= await axiosSecure.patch(`/recipes/${_id}`,menuItem)
 
 
-if(menuRes.insertedId >0){
+if(menuRes.modifiedCount >0){
 
   //show alert succ
- 
+ alert("succesfuul")
 }
 console.log(menuRes)
 
@@ -62,27 +60,31 @@ console.log(menuRes)
 }
 
   };
+  
+  // console.log(data)
   return (
     <div>
-      <UseTitle heading="ADD ITEMS" statement="Whats/s New"></UseTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* name */}
 
-        <label className="">
-          Recipe Name
-        </label>
+        <label className="">Recipe Name</label>
 
-        <input type="text" {...register('name',{required:true})} className="input input-bordered flex items-center gap-2" placeholder="name....." />
+        <input
+          defaultValue={name}
+          type="text"
+          {...register("name", { required: true })}
+          className="input input-bordered flex items-center gap-2"
+          placeholder="name....."
+        />
 
         {/* category  and price */}
         <div className="flex flex-col lg:flex-row  justify-between">
-        
           <select
-            defaultValue="null"
+            defaultValue={recipe}
             {...register("category")}
             className="select select-primary w-full max-w-xs"
           >
-            <option selected value="nulll">
+            <option selected value="null">
               Select a Category
             </option>
             <option value="Salad">Salad</option>
@@ -97,6 +99,7 @@ console.log(menuRes)
             Price
           </label>
           <input
+            defaultValue={price}
             type="number"
             className="grow"
             placeholder="price"
@@ -109,6 +112,7 @@ console.log(menuRes)
         <textarea
           className="textarea textarea-primary"
           placeholder="Text area"
+          defaultValue={recipe}
           {...register("recipe", { required: true })}
         ></textarea>
 
@@ -128,4 +132,4 @@ console.log(menuRes)
   );
 };
 
-export default AddItems;
+export default UpdateItem;
